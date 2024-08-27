@@ -4,13 +4,11 @@ import { handleError } from "./handle-error"
 import { CONFIG_FILE } from "./config-info"
 
 import dotenv from "dotenv"
-dotenv.config({ path: CONFIG_FILE })
 
 import { addSpinner, branch, cwd } from "../commands/add"
 import path from "path"
 import { existsSync } from "fs"
 import fs from "fs/promises"
-import chalk from "chalk"
 
 export async function fetchLocalAndRemoteFile(filePath: string) {
   const lc = await readFileContent(filePath)
@@ -33,6 +31,7 @@ export async function fetchRemoteFiles({
   return files
 }
 export async function fetchRemoteFile({ filePath }: GithubFunctionProps) {
+  dotenv.config({ path: CONFIG_FILE })
   try {
     addSpinner.start(`Fetching ${filePath}...`)
 
@@ -64,14 +63,21 @@ export async function readFileContent(filePath: string) {
   const fileContent = await fs.readFile(targetPath, "utf-8")
   return fileContent
 }
-export async function fetchRemoteFolderFiles({ filePath }: GithubFunctionProps) {
-  const url = `https://api.github.com/repos/DanielCraciunGitHub/nextjs-base-template/contents/${filePath}?ref=${branch}`;
+export async function fetchRemoteFolderFiles({
+  filePath,
+}: GithubFunctionProps) {
+  dotenv.config({ path: CONFIG_FILE })
 
-  const {data: files}: {data: Array<{path: string}>} = await axios.get(url, {
-    headers: {
-      'Authorization': `token ${process.env.ACCESS_KEY}`
+  const url = `https://api.github.com/repos/DanielCraciunGitHub/nextjs-base-template/contents/${filePath}?ref=${branch}`
+
+  const { data: files }: { data: Array<{ path: string }> } = await axios.get(
+    url,
+    {
+      headers: {
+        Authorization: `token ${process.env.ACCESS_KEY}`,
+      },
     }
-  })
-  
+  )
+
   return files.map((file) => file.path)
 }

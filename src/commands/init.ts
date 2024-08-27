@@ -72,7 +72,7 @@ export const init = new Command()
       spinner.start(`Cloning github repository...`)
       const git = simpleGit({ baseDir: cwd })
       await git.clone(
-        `https://${process.env.ACCESS_KEY}@github.com/DanielCraciunGitHub/nextjs-base-template.git`,
+        `https://github.com/DanielCraciunGitHub/nextjs-base-template.git`,
         cwd,
         ["--branch", "master"]
       )

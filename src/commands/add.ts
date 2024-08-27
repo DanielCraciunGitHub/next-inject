@@ -4,7 +4,7 @@ import { handleError } from "../utils/handle-error"
 
 import { metadata } from "./plugins/metadata"
 
-import { loadUserKey } from "./auth"
+import { deleteKey, loadTempKey, loadUserKey } from "./auth"
 import axios from "axios"
 import { logger } from "../utils/logger"
 import {
@@ -40,6 +40,11 @@ export let branch: string = "master"
 export let cwd: string = process.cwd()
 export function setGlobalCwd(inputCwd: string) {
   cwd = inputCwd
+}
+
+export let tempKey: boolean = false
+export function setGlobalTempKey(key: boolean) {
+  tempKey = key
 }
 
 export const optionsSchema = z.object({
@@ -88,6 +93,8 @@ export const add = new Command()
           )
           handleError(res.statusText)
         }
+      } else {
+        if (loadUserKey() === "undefined") await loadTempKey()
       }
 
       addSpinner.succeed("Permission Granted!")
@@ -115,14 +122,6 @@ export const add = new Command()
       )
     }
 
-    const git = simpleGit(cwd)
-    const isRepo = await git.checkIsRepo(CheckRepoActions.IS_REPO_ROOT)
-
-    if (!isRepo) {
-      logger.warn(`ERROR: Must have a git repository initialized here:\n${cwd}`)
-      logger.break()
-      handleError(`Do this by running: ${chalk.blue("git init")}`)
-    }
     if (!isNextjsProject()) {
       const { createProject } = await prompts([
         {
@@ -171,6 +170,10 @@ export const add = new Command()
     addSpinner.info(
       `Find the documentation for this plugin here:\n${chalk.blue(`${NEXTJS_APP_URL}/plugins/${commandToUrl[subCommand.name()]}`)}`
     )
+
+    if (tempKey) {
+      deleteKey()
+    }
 
     const [thisArg, nextArg, ...restArgs] = thisCommand.args
 

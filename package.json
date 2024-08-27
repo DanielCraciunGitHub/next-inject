@@ -25,7 +25,7 @@
     "typecheck": "tsc --noEmit",
     "dev": "tsup --watch",
     "start": "node dist/index.js",
-    "pub:release": "pnpm build && pnpm publish --access public --no-git-checks",
+    "pub:release": "npm run build && npm publish --access public --no-git-checks",
     "release": "changeset version",
     "build": "tsup"
   },

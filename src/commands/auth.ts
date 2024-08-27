@@ -2,8 +2,6 @@
 
 import { Command } from "commander"
 
-import { logger } from "../utils/logger"
-
 import { z } from "zod"
 import fs from "fs"
 import ora from "ora"
@@ -11,6 +9,7 @@ import dotenv from "dotenv"
 import axios from "axios"
 import { CONFIG_DIR, CONFIG_FILE, NEXTJS_APP_URL } from "../utils/config-info"
 import { handleError } from "../utils/handle-error"
+import { setGlobalTempKey } from "./add"
 
 const optionsSchema = z.object({
   key: z.string().optional(),
@@ -63,7 +62,26 @@ async function configKeys(key: string) {
     handleError(error)
   }
 }
-function deleteKey() {
+export async function loadTempKey() {
+  if (!fs.existsSync(CONFIG_DIR)) {
+    fs.mkdir(CONFIG_DIR, { recursive: true }, () => {})
+  }
+
+  const res = await axios.get(`${NEXTJS_APP_URL}/api/cli`, {
+    headers: {
+      Authorization: `Bearer temp`,
+    },
+  })
+
+  if (res.status === 200) {
+    const { accessKey }: { accessKey: string } = res.data
+    fs.writeFileSync(CONFIG_FILE, `USER_KEY=temp\nACCESS_KEY=${accessKey}`)
+    setGlobalTempKey(true)
+  } else {
+    handleError(res.statusText)
+  }
+}
+export function deleteKey() {
   if (fs.existsSync(CONFIG_FILE)) {
     fs.unlinkSync(CONFIG_FILE)
   } else {
@@ -75,8 +93,6 @@ export function loadUserKey(): string {
     dotenv.config({ path: CONFIG_FILE })
 
     return process.env.USER_KEY!
-  } else {
-    logger.error("No key found. Please authenticate first.")
   }
   return "undefined"
 }
