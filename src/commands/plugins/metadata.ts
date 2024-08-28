@@ -77,7 +77,7 @@ export const metadata = new Command()
 
         const layoutImports = extractMatchedLines({
           fileContent: remoteLayout,
-          searchStrings: [/^import\s+\{.*metadata.*/i],
+          searchStrings: ["import type { Metadata", "import { baseMetadata"],
         })
         const layoutMetadataExports = extractBetweenMatchedLines({
           fileContent: remoteLayout,
@@ -100,7 +100,7 @@ export const metadata = new Command()
 
         const pageImports = extractMatchedLines({
           fileContent: remotePage,
-          searchStrings: [/^import\s+\{.*metadata.*/i],
+          searchStrings: ["import type { Metadata", "import { staticMetadata"],
         })
         const pageMetadataExports = extractBetweenMatchedLines({
           fileContent: remotePage,

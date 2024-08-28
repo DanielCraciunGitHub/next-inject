@@ -1,6 +1,6 @@
 {
   "name": "next-inject",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A modular plugin system for Next.js applications, where you can automate mundane configurations with a single click. E.g. next-inject add metadata",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

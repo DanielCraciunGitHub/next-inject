@@ -1,7 +1,7 @@
 import { Command } from "commander"
 
 import { injectFile, injectGithubFiles } from "../../utils/file-injection"
-import { injectOuter } from "@/src/utils/file-transforms"
+import { injectOuter, searchAndReplace } from "@/src/utils/file-transforms"
 
 import { handleError } from "../../utils/handle-error"
 
@@ -48,11 +48,16 @@ export const lp = new Command()
           insertContent: remotePageImports,
         })
 
-        localPage = injectInner({
-          insertContent: "<LandingPage />",
-          direction: "above",
+        const welcomeMessageToReplace = extractBetweenMatchedLines({
           fileContent: localPage,
-          insertPoint: "</section",
+          startString: "<div",
+          endString: "</div>",
+        })
+
+        localPage = searchAndReplace({
+          targetString: welcomeMessageToReplace,
+          newContent: "<LandingPage />",
+          fileContent: localPage,
         })
 
         await injectFile({
@@ -87,8 +92,6 @@ export const lp = new Command()
       } else {
         handleError(`The file path ${configPath} does not exist!`)
       }
-
-      //   await patchPeerPlugin("drizzle-turso", patchNextAuthDrizzleTurso)
     } catch (error) {
       handleError(error)
     }

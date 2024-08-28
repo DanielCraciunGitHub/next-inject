@@ -40,6 +40,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter"`
 const drizzleAdapter = `adapter: DrizzleAdapter(db) as Adapter,`
 
 const schema = `import type { AdapterAccount } from "@auth/core/adapters"
+import { primaryKey } from "drizzle-orm/sqlite-core"
 
 export const accounts = sqliteTable(
   "account",

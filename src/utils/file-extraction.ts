@@ -2,6 +2,9 @@ import { handleError } from "./handle-error"
 
 import { ExtractContentBetweenProps, ExtractContentProps } from "../types"
 
+import { addSpinner } from "../commands/add"
+import chalk from "chalk"
+
 export function extractMatchedLines({
   searchStrings,
   fileContent,
@@ -67,7 +70,13 @@ export function extractBetweenMatchedLines({
     // Combine the extracted lines into a single string separated by '\n'
     return extractedLines.join("\n")!
   } else {
-    handleError("Start string or end string not found, or out of order.")
+    addSpinner.indent += 3
+    addSpinner.fail(
+      chalk.red(
+        "Search and replace failure. Fix the error in the relevant file."
+      )
+    )
+    addSpinner.indent -= 3
   }
   return ""
 }

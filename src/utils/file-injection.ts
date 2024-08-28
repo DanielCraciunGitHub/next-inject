@@ -11,6 +11,7 @@ import {
   InjectFilesProps,
 } from "../types"
 import chalk from "chalk"
+import { logger } from "./logger"
 
 export async function injectGithubFile({ filePath }: GithubFunctionProps) {
   if (!existsSync(cwd)) {
@@ -53,6 +54,7 @@ export async function injectFile({
         ? chalk.yellow(successMessage)
         : chalk.red(successMessage)
   )
+  logger.break()
 }
 export async function injectFiles({
   filesContent,

@@ -10,7 +10,7 @@ import {
   extractBetweenMatchedLines,
   extractMatchedLines,
 } from "../../utils/file-extraction"
-import { fileExists } from "@/src/utils/file-fetching"
+import { fetchRemoteFolderFiles, fileExists } from "@/src/utils/file-fetching"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
@@ -28,28 +28,21 @@ export const nextAuth = new Command()
 
       const authRoute = "src/app/api/auth/[...nextauth]/route.ts"
 
-      const loginForm = "src/components/NextAuth/LoginForm.tsx"
-      const loginModal = "src/components/NextAuth/LoginModal.tsx"
-      const loginButtons = "src/components/NextAuth/SocialProviders.tsx"
-      const logoutButton = "src/components/NextAuth/LogoutButton.tsx"
-      const separator = "src/components/NextAuth/WordedSeparator.tsx"
+      const nextAuthPaths = await fetchRemoteFolderFiles({
+        filePath: "src/components/NextAuth",
+      })
+
       const google = "src/components/SVG/Google.tsx"
 
       const authConfig = "src/lib/auth.ts"
-      const demo = "src/components/NextAuth/Demo.tsx"
 
       await injectGithubFiles({
         filePaths: [
           authActions,
           google,
-          demo,
-          separator,
           authRoute,
-          loginForm,
-          loginModal,
-          loginButtons,
-          logoutButton,
           authConfig,
+          ...nextAuthPaths,
         ],
       })
 
