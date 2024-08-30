@@ -10,7 +10,11 @@ import {
   extractBetweenMatchedLines,
   extractMatchedLines,
 } from "../../utils/file-extraction"
-import { fetchRemoteFile, fileExists } from "@/src/utils/file-fetching"
+import {
+  fetchRemoteFile,
+  fetchRemoteFolderFiles,
+  fileExists,
+} from "@/src/utils/file-fetching"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
@@ -22,27 +26,19 @@ export const stripe = new Command()
     try {
       await installDeps(["stripe"])
 
-      const stripeAction = "src/app/_actions/stripe.ts"
       const stripeConfig = "src/lib/stripe.ts"
 
       const stripeWebhook = "src/app/api/webhooks/stripe/route.ts"
 
-      const stripeButton = "src/components/Stripe/StripeButton.tsx"
-      const stripeDemo = "src/components/Stripe/StripeDemo.tsx"
-
-      const subCard = "src/components/Stripe/SubscriptionCard.tsx"
-      const oneOffCard = "src/components/Stripe/OneOffCard.tsx"
+      const stripePaths = await fetchRemoteFolderFiles({
+        filePath: "src/components/Stripe",
+      })
+      const svgPaths = await fetchRemoteFolderFiles({
+        filePath: "src/components/SVG",
+      })
 
       await injectGithubFiles({
-        filePaths: [
-          stripeAction,
-          stripeWebhook,
-          stripeButton,
-          stripeDemo,
-          stripeConfig,
-          oneOffCard,
-          subCard,
-        ],
+        filePaths: [stripeWebhook, stripeConfig, ...stripePaths, ...svgPaths],
       })
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
