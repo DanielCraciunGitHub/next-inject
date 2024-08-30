@@ -9,14 +9,18 @@ import { NextInjectConfig, PluginNames } from "../types"
 import chalk from "chalk"
 import { logger } from "./logger"
 
+export const configFiles = [
+  "next.config.js",
+  "next.config.ts",
+  "next.config.mjs",
+] as const
+
 export async function getPackageJsonInfo() {
   const packageJsonPath = path.join("package.json")
 
   return (await fs.readJSON(packageJsonPath)) as PackageJson
 }
 export function isNextjsProject(): boolean {
-  const configFiles = ["next.config.js", "next.config.ts", "next.config.mjs"]
-
   for (const configFile of configFiles) {
     const configFilePath = path.join(cwd, configFile)
     if (fs.existsSync(configFilePath)) {
