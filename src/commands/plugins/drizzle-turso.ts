@@ -7,7 +7,10 @@ import { handleError } from "../../utils/handle-error"
 import { installDeps, installDevDeps } from "../../utils/package-management"
 import { extractMatchedLines } from "../../utils/file-extraction"
 
-import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
+import {
+  fetchLocalAndRemoteFile,
+  fetchRemoteFolderFiles,
+} from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
 import { patchPeerPlugin } from "@/src/utils/project-info"
 import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
@@ -21,11 +24,10 @@ export const drizzleTurso = new Command()
       await installDevDeps(["drizzle-kit"])
 
       const drizzleConfig = "drizzle.config.ts"
-      const index = "src/db/index.ts"
-      const schema = "src/db/schema.ts"
+      const dbFiles = await fetchRemoteFolderFiles({ filePath: "src/db" })
 
       await injectGithubFiles({
-        filePaths: [drizzleConfig, index, schema],
+        filePaths: [drizzleConfig, ...dbFiles],
       })
 
       const packageJson = "package.json"

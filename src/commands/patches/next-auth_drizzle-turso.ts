@@ -29,7 +29,7 @@ export async function patchNextAuthDrizzleTurso() {
   await injectFile({
     filePath: schemaFile,
     fileContent: localSchema,
-    successColor: "red",
+    successColor: "yellow",
   })
 }
 
