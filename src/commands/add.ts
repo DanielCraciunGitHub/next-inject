@@ -26,7 +26,7 @@ import { bootstrap } from "./bootstrap"
 import { init } from "./init"
 import chalk from "chalk"
 import { nextAuth } from "./plugins/next-auth"
-import simpleGit, { CheckRepoActions } from "simple-git"
+
 import { existsSync } from "fs"
 import { drizzleTurso } from "./plugins/drizzle-turso"
 import { stripe } from "./plugins/stripe"
@@ -136,25 +136,23 @@ export const add = new Command()
       } else {
         process.exit(1)
       }
-    } else if (!isNextInjectProject()) {
-      const { bootstrapProject } = await prompts([
-        {
-          name: "bootstrapProject",
-          type: "confirm",
-          message:
-            "Next Inject has not been bootstrapped to this application, should we do this for you?",
-        },
-      ])
-      if (bootstrapProject) {
-        await bootstrap.parseAsync()
-      } else {
-        process.exit(1)
-      }
+    } else if (!isNextInjectProject() && isNextjsProject()) {
+      logger.error(
+        "ERROR: Next Inject is intended for new projects and cannot be used in an existing Next.js project."
+      )
+      logger.warn(
+        "Please run `npx next-inject init` in a new directory outside of any existing Next.js project."
+      )
+      logger.break()
+      logger.info("Learn more about starting with our base template:")
+      logger.info(`${NEXTJS_APP_URL}/plugins/base-template`)
+      logger.break()
+      process.exit(1)
+    } else {
+      logger.break()
+      addSpinner.info(`Injecting ${chalk.green(subCommand.name())} plugin...`)
+      logger.break()
     }
-
-    logger.break()
-    addSpinner.info(`Injecting ${chalk.green(subCommand.name())} plugin...`)
-    logger.break()
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
     await registerNextInjectPlugin(subCommand.name())

@@ -1,4 +1,3 @@
-import { addSpinner } from "@/src/commands/add"
 import { injectFile } from "@/src/utils/file-injection"
 
 import fs from "fs"
@@ -23,6 +22,9 @@ describe("Injection functions work", () => {
 
   afterAll(() => {
     fs.unlinkSync("test")
-    fs.unlinkSync("testr/testr")
+
+    fs.rmSync("testr", {
+      recursive: true,
+    })
   })
 })

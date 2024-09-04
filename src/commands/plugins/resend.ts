@@ -8,7 +8,7 @@ import { installDeps } from "../../utils/package-management"
 
 import {
   fetchLocalAndRemoteFile,
-  fetchRemoteFile,
+  fetchRemoteFolderFiles,
   fileExists,
 } from "@/src/utils/file-fetching"
 import {
@@ -16,8 +16,6 @@ import {
   extractMatchedLines,
 } from "@/src/utils/file-extraction"
 import { injectInner, injectOuter } from "@/src/utils/file-transforms"
-import { patchResendReactEmail } from "../patches/resend_react-email"
-import { patchPeerPlugin } from "@/src/utils/project-info"
 
 export const resend = new Command()
   .name("resend")
@@ -26,11 +24,13 @@ export const resend = new Command()
     try {
       await installDeps(["resend"])
 
-      const emailAction = "src/app/_actions/email.tsx"
-      const resendDemo = "src/components/Resend/ResendDemo.tsx"
+      const resendAction = "src/lib/send-email.tsx"
+      const resendFiles = await fetchRemoteFolderFiles({
+        filePath: "src/components/Resend",
+      })
 
       await injectGithubFiles({
-        filePaths: [emailAction, resendDemo],
+        filePaths: [resendAction, ...resendFiles],
       })
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
@@ -67,7 +67,7 @@ export const resend = new Command()
         })
       }
 
-      await patchPeerPlugin("react-email", patchResendReactEmail)
+      // await patchPeerPlugin("react-email", patchResendReactEmail)
     } catch (error) {
       handleError(error)
     }
