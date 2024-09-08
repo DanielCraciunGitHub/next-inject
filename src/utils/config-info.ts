@@ -8,7 +8,7 @@ export const NEXTJS_APP_URL = "https://www.nextinject.pro"
 //   "http://localhost:3000"
 
 // ! UPDATE THIS WHENEVER YOU ADD A NEW COMMAND
-export const freeCommands = ["metadata", "react-email", "lp"]
+export const freeCommands = ["metadata", "react-email", "lp", "waitlist"]
 
 export const commandToUrl: Record<string, string> = {
   stripe: "payments/stripe",
@@ -18,5 +18,6 @@ export const commandToUrl: Record<string, string> = {
   "react-email": "emails/react-email",
   resend: "emails/resend",
   metadata: "misc/metadata",
-  lp: "ui/lp"
+  lp: "ui/lp",
+  waitlist: "misc/waitlist",
 }

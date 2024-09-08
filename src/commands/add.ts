@@ -22,7 +22,7 @@ import {
   registerNextInjectPlugin,
 } from "../utils/project-info"
 import prompts from "prompts"
-import { bootstrap } from "./bootstrap"
+
 import { init } from "./init"
 import chalk from "chalk"
 import { nextAuth } from "./plugins/next-auth"
@@ -31,8 +31,10 @@ import { existsSync } from "fs"
 import { drizzleTurso } from "./plugins/drizzle-turso"
 import { stripe } from "./plugins/stripe"
 import { resend } from "./plugins/resend"
+
 import { sanity } from "./plugins/sanity"
 import { lp } from "./plugins/lp"
+import { waitlist } from "./plugins/waitlist"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -57,6 +59,7 @@ export const add = new Command()
   .usage("[commands...] <options>")
   // ! Add new commands here
   .addCommand(lp)
+  .addCommand(waitlist)
   .addCommand(metadata)
   .addCommand(reactEmail)
   .addCommand(nextAuth)
