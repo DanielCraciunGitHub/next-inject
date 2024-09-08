@@ -32,18 +32,10 @@ export const nextAuth = new Command()
         filePath: "src/components/NextAuth",
       })
 
-      const google = "src/components/SVG/Google.tsx"
-
       const authConfig = "src/lib/auth.ts"
 
       await injectGithubFiles({
-        filePaths: [
-          authActions,
-          google,
-          authRoute,
-          authConfig,
-          ...nextAuthPaths,
-        ],
+        filePaths: [authActions, authRoute, authConfig, ...nextAuthPaths],
       })
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
