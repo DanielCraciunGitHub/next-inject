@@ -15,8 +15,9 @@ import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
 import { installDeps } from "@/src/utils/package-management"
 
-export const lp = new Command()
-  .name("lp")
+export const landingPage = new Command()
+  .name("landing-page")
+  .alias("lp")
   .description("Inject a beautiful landing page into your app")
   .action(async function (this: Command) {
     try {

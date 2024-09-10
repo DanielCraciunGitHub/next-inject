@@ -33,7 +33,7 @@ import { stripe } from "./plugins/stripe"
 import { resend } from "./plugins/resend"
 
 import { sanity } from "./plugins/sanity"
-import { lp } from "./plugins/lp"
+import { landingPage } from "./plugins/lp"
 import { waitlist } from "./plugins/waitlist"
 
 export const addSpinner = ora()
@@ -58,7 +58,7 @@ export const add = new Command()
   .description("Inject new plugins ⚡")
   .usage("[commands...] <options>")
   // ! Add new commands here
-  .addCommand(lp)
+  .addCommand(landingPage)
   .addCommand(waitlist)
   .addCommand(metadata)
   .addCommand(reactEmail)
