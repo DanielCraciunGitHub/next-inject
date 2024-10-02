@@ -13,6 +13,7 @@ export const freeCommands = [
   "react-email",
   "landing-page",
   "waitlist",
+  "trpc",
 ]
 
 export const commandToUrl: Record<string, string> = {

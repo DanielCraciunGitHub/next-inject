@@ -79,5 +79,11 @@ export async function fetchRemoteFolderFiles({
     }
   )
 
-  return files.map((file) => file.path)
+  return files
+    .map((file) => file.path)
+    .filter((path) => {
+      const segments = path.split("/")
+      const lastSegment = segments[segments.length - 1]
+      return lastSegment.includes(".")
+    })
 }

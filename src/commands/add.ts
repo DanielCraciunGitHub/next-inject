@@ -35,6 +35,7 @@ import { resend } from "./plugins/resend"
 import { sanity } from "./plugins/sanity"
 import { landingPage } from "./plugins/lp"
 import { waitlist } from "./plugins/waitlist"
+import { trpc } from "./plugins/trpc"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -58,6 +59,7 @@ export const add = new Command()
   .description("Inject new plugins ⚡")
   .usage("[commands...] <options>")
   // ! Add new commands here
+  .addCommand(trpc)
   .addCommand(landingPage)
   .addCommand(waitlist)
   .addCommand(metadata)
