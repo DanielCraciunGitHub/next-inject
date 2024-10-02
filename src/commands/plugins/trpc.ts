@@ -14,6 +14,9 @@ import { fetchRemoteFolderFiles, fileExists } from "@/src/utils/file-fetching"
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 
 import { installDeps } from "@/src/utils/package-management"
+import { patchPeerPlugin } from "@/src/utils/project-info"
+import { patchTrpcNextAuth } from "../patches/trpc-next-auth"
+import { patchTrpcDrizzleTurso } from "../patches/trpc-drizzle-turso"
 
 export const trpc = new Command()
   .name("trpc")
@@ -74,6 +77,9 @@ export const trpc = new Command()
       } else {
         handleError(`The file path ${providersPath} does not exist!`)
       }
+
+      await patchPeerPlugin("next-auth", patchTrpcNextAuth)
+      await patchPeerPlugin("drizzle-turso", patchTrpcDrizzleTurso)
     } catch (error) {
       handleError(error)
     }

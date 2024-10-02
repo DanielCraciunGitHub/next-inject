@@ -4,12 +4,12 @@ import { nextInjectConfigSchema } from "../validations"
 export type PluginNames =
   | "next-auth"
   | "drizzle-turso"
-  | "metadata"
   | "stripe"
   | "trpc"
   | "react-email"
   | "nodemailer"
   | "resend"
+  | "sanity"
 
 export type InjectContentProps = {
   insertContent: string

@@ -16,6 +16,7 @@ import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
 import { patchPeerPlugin } from "@/src/utils/project-info"
 import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
+import { patchTrpcNextAuth } from "../patches/trpc-next-auth"
 
 export const nextAuth = new Command()
   .name("next-auth")
@@ -102,6 +103,7 @@ export const nextAuth = new Command()
       }
 
       await patchPeerPlugin("drizzle-turso", patchNextAuthDrizzleTurso)
+      await patchPeerPlugin("trpc", patchTrpcNextAuth)
     } catch (error) {
       handleError(error)
     }

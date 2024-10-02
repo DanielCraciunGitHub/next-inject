@@ -14,6 +14,7 @@ import {
 import { injectInner } from "@/src/utils/file-transforms"
 import { patchPeerPlugin } from "@/src/utils/project-info"
 import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
+import { patchTrpcDrizzleTurso } from "../patches/trpc-drizzle-turso"
 
 export const drizzleTurso = new Command()
   .name("drizzle-turso")
@@ -54,6 +55,7 @@ export const drizzleTurso = new Command()
       })
 
       await patchPeerPlugin("next-auth", patchNextAuthDrizzleTurso)
+      await patchPeerPlugin("trpc", patchTrpcDrizzleTurso)
     } catch (error) {
       handleError(error)
     }

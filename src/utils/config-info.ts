@@ -26,4 +26,5 @@ export const commandToUrl: Record<string, string> = {
   metadata: "saas/metadata",
   "landing-page": "saas/landing-page",
   waitlist: "saas/waitlist",
+  trpc: "backend/trpc",
 }
